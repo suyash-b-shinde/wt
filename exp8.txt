@@ -1,0 +1,137 @@
+demo
+
+<?php
+$servername = "localhost";
+$username = "Ajit";
+$password = "Shinde#123";
+$dbname = "college";
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+// Check connection
+if ($conn->connect_error) {
+die("Connection failed: " . $conn->connect_error);
+}
+
+
+$sql = "CREATE TABLE student (
+    userid VARCHAR(30) NOT NULL,
+    pwd VARCHAR(30) NOT NULL
+)";
+
+// Execute the query
+if ($conn->query($sql) === TRUE) {
+    echo "Table Students created successfully      ";
+} else {
+    echo "Error creating table: " . $conn->error;
+}
+
+$sql = "INSERT INTO student (userid, pwd) VALUES
+    ('EC4102', 'verma'),
+    ('EC4103', 'patil'),
+    ('EC4104', 'kumar'),
+    ('EC4105', 'joshi'),
+    ('EC4106', 'gupta'),
+    ('EC4107', 'rai'),
+    ('EC4108', 'sharma'),
+    ('EC4109', 'mehta'),
+    ('EC4110', 'khan'),
+    ('EC4111', 'shinde')";
+
+if ($conn->query($sql) === TRUE) {
+    echo "New records created successfully";
+} else {
+    echo "Error: " . $sql . "<br>" . $conn->error;
+}
+
+
+$conn->close();
+?>
+
+
+
+php
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login Now</title>
+    <script language="javascript">
+        function validate() {
+            if (document.login.uname.value == "") {
+                alert("Enter username");
+                document.login.uname.focus();
+                return false;
+            }
+            if (document.login.pwd.value == "") {
+                alert("Enter password");
+                document.login.pwd.focus();
+                return false;
+            }
+            return true;
+        }
+    </script>
+</head>
+<body>
+    <h3>Login</h3>
+    <form name="login" method="POST" action="" onsubmit="return validate()">
+        <table>
+            <tr>
+                <td>Username:</td>
+                <td><input type="text" name="uname"></td>
+            </tr>
+            <tr>
+                <td>Password:</td>
+                <td><input type="password" name="pwd"></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input type="submit" name="login" value="Login"></td>
+            </tr>
+        </table>
+    </form>
+
+    <?php
+    // Database connection
+    $servername = "localhost";
+    $username = "Ajit";
+    $password = "Shinde#123"; 
+    $dbname = "college"; // replace this with your database name
+
+    // Connect to the database
+    $conn = new mysqli($servername, $username, $password, $dbname);
+
+    // Check connection
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+
+    if (isset($_POST['login'])) {
+        $user = $conn->real_escape_string($_POST['uname']);
+        $pass = $conn->real_escape_string($_POST['pwd']);
+
+        // SQL query to check the credentials
+        $sql = "SELECT * FROM student WHERE userid='$user' AND pwd='$pass'";
+        $res = $conn->query($sql);
+
+        if ($res->num_rows > 0) {
+            echo "<script>location.href='login.php';</script>";
+        } else {
+            echo "Wrong Credentials";
+        }
+    }
+
+    // Close the connection
+    $conn->close();
+    ?>
+</body>
+</html>
+
+
+
+login php
+
+<?php
+echo "Login successfully";
+?>
+
+
